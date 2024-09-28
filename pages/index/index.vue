@@ -1,94 +1,65 @@
 <script setup lang="ts">
-//
+import type { VideoItem } from "~/types/video";
+// get /api/channel
+const { data: channelList } = await useFetch('/api/channel');
+const { data: videoList } = await useFetch('/api/video');
+// console.log(videoList);
+
+// 显示列表
+const list = ref<VideoItem[]>([]);
+// 加载状态
+const loading = ref(false);
+// 结束加载状态
+const finished = ref(false)
+
+// 页码
+let page = 1;
+// 页数
+let pageSize = 20;
+// 触底触发
+const onLoad = () => {
+    // 同步设置 loading 为 false，表示数据加载完成
+    loading.value = false;
+
+    // 从 videoList 中获取分页数据，当前页为 page，每页大小为 pageSize
+    const data = videoList.value?.slice((page - 1) * pageSize, page * pageSize) || [];
+
+    // 将获取的数据添加到 list 中
+    if (list.value) {
+        list.value.push(...data);
+    }
+
+    // 页码加一，为下一次加载更多数据做准备
+    page++;
+
+    // 如果 videoList 中的所有数据都已加载到 list 中，则将 finished 设置为 true
+    if (videoList.value?.length === list.value?.length) {
+        finished.value = true;
+    }
+};
+
+// 初始化执行获取20条视频列表
+onLoad()
 </script>
 
 <template>
-    <!-- 公共头部 -->
-    <header class="app-header">
-        <NuxtLink class="logo" to="/">
-            <i class="iconfont Navbar_logo"></i>
-        </NuxtLink>
-        <a class="search" href="#">
-            <i class="iconfont ic_search_tab"></i>
-        </a>
-        <a class="face" href="#">
-            <img src="@/assets/images/login.png" />
-        </a>
-        <div class="down-app">下载 APP</div>
-    </header>
+    <AppHeader></AppHeader>
     <!-- 频道模块 -->
     <van-tabs>
-        <van-tab v-for="item in 10" :key="item" title="频道" />
+        <van-tab v-for="item in channelList" :key="item.id" :title="item.name" />
     </van-tabs>
     <!-- 视频列表 -->
-    <div class="video-list">
-        <NuxtLink class="v-card" v-for="item in 20" :key="item" :to="`/video/0`">
-            <div class="card">
-                <div class="card-img">
-                    <img class="pic" src="@/assets/images/loading.png" alt="当你觉得扛不住的时候来看看这段视频" />
-                </div>
-                <div class="count">
-                    <span>
-                        <i class="iconfont icon_shipin_bofangshu"></i>
-                        676.2万
-                    </span>
-                    <span>
-                        <i class="iconfont icon_shipin_danmushu"></i>
-                        1.6万
-                    </span>
-                </div>
-            </div>
-            <p class="title">当你觉得扛不住的时候来看看这段视频</p>
-        </NuxtLink>
-    </div>
+
+    <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+        <div class="video-list">
+            <AppVideo v-for="item in list" :key="item.bvid" :item="item"></AppVideo>
+        </div>
+    </van-list>
+
 </template>
 
-<style lang="scss">
-// 公共头部
-.app-header {
-    display: flex;
-    align-items: center;
-    padding: 8px 12px;
-    background-color: #fff;
+<style lang="scss" scoped>
 
-    .logo {
-        flex: 1;
-
-        .Navbar_logo {
-            color: #fb7299;
-            font-size: 28px;
-        }
-    }
-
-    .search {
-        padding: 0 8px;
-
-        .ic_search_tab {
-            color: #ccc;
-            font-size: 22px;
-        }
-    }
-
-    .face {
-        padding: 0 15px;
-
-        img {
-            width: 24px;
-            height: 24px;
-        }
-    }
-
-    .down-app {
-        font-size: 12px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #fb7299;
-        color: #fff;
-        border-radius: 5px;
-        padding: 5px 10px;
-    }
-}
 
 // 视频列表
 .video-list {
@@ -97,56 +68,5 @@
     padding: 10px 5px;
 }
 
-// 视频卡片
-.v-card {
-    width: 50%;
-    padding: 0 5px 10px;
 
-    .card {
-        position: relative;
-        background: #f3f3f3 url(@/assets/images/default.png) center no-repeat;
-        background-size: 36%;
-        border-radius: 2px;
-        overflow: hidden;
-
-        .card-img {
-            .pic {
-                height: 100px;
-                width: 100%;
-                object-fit: cover;
-            }
-        }
-
-        .count {
-            background-image: linear-gradient(0deg, #000000d9, #0000);
-            color: #fff;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 5px 6px;
-
-            span {
-                .iconfont {
-                    font-size: 12px;
-                }
-            }
-        }
-    }
-
-    .title {
-        margin-top: 5px;
-        font-size: 12px;
-        color: #212121;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-    }
-}
 </style>

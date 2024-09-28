@@ -1,3 +1,4 @@
 {
+  // 为了提高IDE中对来自'nitro'和'vue'的自动导入的清晰度，你可以添加一个~/server/tsconfig.json文件，内容如下：
   "extends": "../.nuxt/tsconfig.server.json"
 }
