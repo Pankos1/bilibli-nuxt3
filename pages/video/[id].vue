@@ -3,13 +3,13 @@ import type { BarrageInstance } from 'vant'
 
 // 弹幕相关
 const barrageList = ref([
-  { id: 100, text: '轻量' },
-  { id: 101, text: '可定制的' },
-  { id: 102, text: '移动端' },
-  { id: 103, text: 'Vue' },
-  { id: 104, text: '组件库' },
-  { id: 105, text: 'VantUI' },
-  { id: 106, text: '666' },
+  { id: 100, text: '原神启动' },
+  { id: 101, text: '星穹铁道启动' },
+  { id: 102, text: '米哈游启动！' },
+  { id: 103, text: '蔡徐坤姐姐！' },
+  { id: 104, text: '山上没了桃花树' },
+  { id: 105, text: '桃花树外桃花庵' },
+  { id: 106, text: 'man, whant can i say?' },
 ])
 
 const barrageRef = ref<BarrageInstance>()
@@ -23,14 +23,15 @@ const onPause = () => {
 }
 
 // 通过路由参数获取视频id
-const { params } = useRoute()
-const { data: detail } = await useFetch(`/api/hot/${params.id}`)
+const { params } = useRoute();
+console.log('params', params.id);
+
+const { data: detail } = await useFetch(`/api/video/${params.id}`)
+console.log('详情', detail);
 
 // 获取视频列表数据
 const { data: videoList } = await useFetch('/api/video')
 
-
-console.log('详情',detail);
 
 
 // 动态设置标题

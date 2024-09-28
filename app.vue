@@ -13,8 +13,8 @@ useSeoMeta({
 
 <template>
 
-  <!-- routerview -->
-  <NuxtPage></NuxtPage>
+  <!-- routerview  缓存十级页面 提升用户体验-->
+  <NuxtPage :keepalive="{max:10}"></NuxtPage>
 
 
   <!-- routerlink

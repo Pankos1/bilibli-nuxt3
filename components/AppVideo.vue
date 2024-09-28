@@ -7,7 +7,7 @@ defineProps<{item:VideoItem}>()
 
 
 <template>
-    <NuxtLink class="v-card" :to="`/video/${item.bvid}}`">
+    <NuxtLink class="v-card" :to="`/video/${item.bvid}`">
         <div class="card">
             <div class="card-img">
                 <img class="pic" :src="item.pic" :alt="item.title" referrerpolicy="no-referrer" />
