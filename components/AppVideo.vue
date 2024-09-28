@@ -80,6 +80,7 @@ defineProps<{item:VideoItem}>()
         text-overflow: ellipsis;
         display: -webkit-box;
         -webkit-line-clamp: 2;
+        line-clamp: 2; /* 标准属性 */
         -webkit-box-orient: vertical;
     }
 }

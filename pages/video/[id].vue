@@ -57,7 +57,7 @@ useSeoMeta({
     <h1 class="title-text">{{ detail?.title }}</h1>
     <div class="body">
       <div class="author">
-        <img class="avatar" :src="detail?.author.face" />
+        <img class="avatar" :src="detail?.author.face" referrerpolicy="no-referrer"/>
         <span class="name">{{ detail?.author.name }}</span>
       </div>
     </div>

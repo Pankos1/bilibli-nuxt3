@@ -25,9 +25,9 @@ useSeoMeta({
 <style lang="scss">
 
 // 基础样式
-@import './assets/styles/base.scss';
+@import '@/assets/styles/base.scss';
 // 字体图标
-@import './assets/styles/iconfont.scss';
+@import '@/assets/styles/iconfont.scss';
 
 /* vant-ui 主题定制 */
 :root {
